@@ -56,8 +56,8 @@
         app:civ_border_width="1dp"
         android:src="@drawable/avatar"
         android:layout_margin="10dp"/>
-    
-    
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -98,7 +98,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/linear1">
+        android:layout_below="@id/linear1"
+        tools:ignore="NotSibling">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -185,7 +186,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/linear1"
-        android:gravity="center">
+        android:gravity="center"
+        tools:ignore="NotSibling">
 
 
         <Button
@@ -200,11 +202,5 @@
     </RelativeLayout>
 
 </RelativeLayout>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/combindLayout"
 
 </RelativeLayout>
