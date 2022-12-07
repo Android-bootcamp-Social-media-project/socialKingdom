@@ -11,14 +11,12 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.regex.Pattern
+import retrofit2.*
 
 class ShowPostActivity : AppCompatActivity() {
 
-    val apiInterface = APIClient().getClient()?.create(APIInterface::class.java)
+    private val apiInterface by lazy { APIClient().getClient()?.create(APIInterface::class.java) }
+    //val apiInterface = APIClient().getClient()?.create(APIInterface::class.java)
     var postId = 0
     var userLogin = "anonymous"
 
@@ -44,7 +42,7 @@ class ShowPostActivity : AppCompatActivity() {
         setContentView(R.layout.activity_show_post)
 
         //check if user login
-        var tempUserLogin = intent.getStringExtra("userLogin")
+        val tempUserLogin = intent.getStringExtra("userLogin")
         if (tempUserLogin != null){
             userLogin = tempUserLogin
         }
@@ -71,9 +69,9 @@ class ShowPostActivity : AppCompatActivity() {
                     Toast.makeText(this,"You should be login", Toast.LENGTH_SHORT).show()
                 }
                 else {
-                    updatePostComments()
-                    etViewPostComment.clearFocus()
-                }
+                        updatePostComments()
+                        etViewPostComment.clearFocus()
+                    }
             }
             else {
                 Toast.makeText(this@ShowPostActivity,
@@ -82,12 +80,17 @@ class ShowPostActivity : AppCompatActivity() {
         }
 
         btLike.setOnClickListener {
-            if (userLogin == "anonymous"){
-                Toast.makeText(this,"You should be login", Toast.LENGTH_SHORT).show()
+
+            if(userLogin != "Anonymous") {
+                if (likesList.contains(userLogin!!)) {
+                    Toast.makeText(this, "You have already liked this post", Toast.LENGTH_LONG)
+                        .show()
+                }
+                else{
+                    updatePostLikes()
+                }
             }
-            else {
-                updatePostLikes()
-            }
+
         }
     }
 
@@ -102,36 +105,55 @@ class ShowPostActivity : AppCompatActivity() {
                     response: Response<PostsItem>) {
 
                     if (response.body() != null) {
-                        var body = response.body()
-                        if (body != null)
-                        {
+                        var body = response.body()!!
+                        try{
                             //Comments data and count
                             if (body.comments.isNotEmpty()){
                                 val comment = body.comments
-                                val comma = ","
-                                val commentArr = Pattern.compile(comma).split(comment)
-                                commentsList.addAll(commentArr)
+                               // val comma = ","
+                                commentsList = comment.split(",") as ArrayList<String>
+                                val newCommentsList = ArrayList<String>()
+
+                                // val commentArr = Pattern.compile(comma).split(comment)
+                                for(comment:String in commentsList){
+                                    newCommentsList.add(comment)
+                                }
+                                //commentsList.addAll(commentArr)
+                                commentsList = newCommentsList
+                                Log.d("TAG", "onResponse: ${commentsList.toString()}")
                                 adapter.updateCommentsList(commentsList)
                                 tvViewPostComments.text = "Comments: ${commentsList.size}"
                             }
                             else {
                                 tvViewPostComments.text = "Comments: 0"
                             }
-
+                        }catch (e:Exception){
+                            Log.d("TAG_SHOW_POST_ACTIVITY", "Exception in comments: $e")
+                        }
+                        try {
                             //Likes data and count
-                            if (body.likes.isNotEmpty()){
+                            if (body.likes.isNotEmpty()) {
                                 val like = body.likes
-                                val comma = ","
-                                val likeArr = Pattern.compile(comma).split(like)
-                                likesList.addAll(likeArr)
+
+                                likesList = like.split(",") as ArrayList<String>
+
+                                val newLikesList = ArrayList<String>()
+
+                                for(likes:String in likesList){
+                                    newLikesList.add(likes)
+                                }
+                                likesList = newLikesList
+
+                                Log.d("TAG", "ON LIKES: ${likesList.toString()}")
                                 tvViewPostLikes.text = "Likes: ${likesList.size}"
-                            }
-                            else {
+                            } else {
                                 tvViewPostLikes.text = "Likes: 0"
                             }
                             tvViewPostTitle.text = body.title
                             tvViewPostText.text = body.text
                             oldPostData = body
+                        }catch (e:Exception){
+                            Log.d("TAG_SHOW_POST_ACTIVITY", "Exception in likes: $e")
                         }
                     }
                 }
@@ -155,8 +177,7 @@ class ShowPostActivity : AppCompatActivity() {
 
                     if (response.body() != null) {
                         var body = response.body()
-                        if (body != null)
-                        {
+                        if (body != null){
                             Toast.makeText(this@ShowPostActivity,
                                 "Comment has been added", Toast.LENGTH_SHORT).show()
                             getPost()
@@ -173,6 +194,14 @@ class ShowPostActivity : AppCompatActivity() {
 
     //Update Likes from API
     private fun updatePostLikes(){
+/*        for (i in 0 until likesList.size) {
+            if (likesList[i] != userLogin) {
+                Log.d("TAG", "updatePostLikes: $userLogin")
+                Toast.makeText(this@ShowPostActivity, "FROM LIKES: Like has been added!!", Toast.LENGTH_SHORT).show()
+                break
+            }
+
+        }*/
         likesList.add(userLogin)
         oldPostData.likes = "${oldPostData.likes}, ${likesList.last()}"
         apiInterface?.updatePost(postId, oldPostData)

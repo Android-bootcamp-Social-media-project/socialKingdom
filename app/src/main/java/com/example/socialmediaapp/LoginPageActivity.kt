@@ -9,14 +9,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import retrofit2.*
 
 class LoginPageActivity : AppCompatActivity() {
 
     val apiInterface = APIClient().getClient()?.create(APIInterface::class.java)
-    var userLogin = ""
+
+    // Set user as a default as anonymous
+    var userLogin = "anonymous"
     var apiKey = ""
 
     lateinit var userNameEtSignup : EditText

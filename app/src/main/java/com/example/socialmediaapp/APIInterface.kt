@@ -1,16 +1,16 @@
 package com.example.socialmediaapp
 
-import retrofit2.Call
+import retrofit2.*
 import retrofit2.http.*
 
 interface APIInterface {
 
     @GET("users/")
-    fun getAllUsers(): Call<Users>
+    fun getAllUsers(): retrofit2.Call<Users>
 
 
     @POST("users/")
-    fun addUsers(@Body Users: UsersItem): Call<UsersItem>
+    fun addUsers(@Body Users: UsersItem): retrofit2.Call<UsersItem>
 
 
     @GET("login/{username}/{password}")

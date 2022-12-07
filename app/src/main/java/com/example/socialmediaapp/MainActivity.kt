@@ -10,9 +10,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import retrofit2.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //check if user login
+        //check if user is login
         var tempUserLogin = intent.getStringExtra("userLogin")
         if (tempUserLogin != null){
             userLogin = tempUserLogin
