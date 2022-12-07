@@ -18,7 +18,8 @@ import retrofit2.*
 class ShowPostActivity : AppCompatActivity() {
 
     private val apiInterface by lazy { APIClient().getClient()?.create(APIInterface::class.java) }
-    //val apiInterface = APIClient().getClient()?.create(APIInterface::class.java)
+
+    // set default values
     var postId = 0
     var postImage = ""
     var postUser = ""
@@ -38,6 +39,7 @@ class ShowPostActivity : AppCompatActivity() {
 
     var likesList = arrayListOf<String>()
     var commentsList = arrayListOf<String>()
+
     private lateinit var myRV : RecyclerView
     var adapter = CommentsAdapter(commentsList)
 
@@ -45,6 +47,10 @@ class ShowPostActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_post)
+
+        // initializing lateinit variable
+        oldPostData = PostsItem("","","","","",0)
+
 
         //check if user login
         val tempUserLogin = intent.getStringExtra("userLogin")
@@ -69,14 +75,14 @@ class ShowPostActivity : AppCompatActivity() {
         btLike = findViewById(R.id.btLike)
 
         getPost()
-        btLeaveComment.setOnClickListener {
+        btLeaveComment.setOnClickListener{
             if (etViewPostComment.text.isNotEmpty()){
                 if (userLogin == "Anonymous"){
                     Toast.makeText(this,"You should be login", Toast.LENGTH_SHORT).show()
                 }
                 else {
                         updatePostComments()
-                    etViewPostComment.clearFocus()
+                        etViewPostComment.clearFocus()
                         etViewPostComment.text.clear()
                     }
             }
@@ -88,19 +94,15 @@ class ShowPostActivity : AppCompatActivity() {
 
         btLike.setOnClickListener {
             if(userLogin != "Anonymous") {
-                Log.d("Tag", "UserLoginData: $userLogin")
-                if (likesList.contains(userLogin!!)) {
-                    Toast.makeText(this, "You have already liked this post", Toast.LENGTH_LONG)
-                        .show()
+                if (likesList.contains(userLogin)) {
+                    Toast.makeText(this, "You have already liked this post", Toast.LENGTH_LONG).show()
                 }
                 else{
                     updatePostLikes()
                 }
             } else {
-                Toast.makeText(this, "You should be login", Toast.LENGTH_LONG)
-
+                Toast.makeText(this, "You should login", Toast.LENGTH_LONG).show()
             }
-
         }
     }
 
@@ -117,18 +119,19 @@ class ShowPostActivity : AppCompatActivity() {
                     if (response.body() != null) {
                         var body = response.body()!!
                         try{
+
+                            val comment = body.comments
+
                             //Comments data and count
-                            if (body.comments.isNotEmpty()){
-                                val comment = body.comments
-                               // val comma = ","
+                            if (comment.isNotEmpty()){
+
                                 commentsList = comment.split(",") as ArrayList<String>
                                 val newCommentsList = ArrayList<String>()
 
-                                // val commentArr = Pattern.compile(comma).split(comment)
                                 for(comment:String in commentsList){
                                     newCommentsList.add(comment)
                                 }
-                                //commentsList.addAll(commentArr)
+
                                 commentsList = newCommentsList
                                 Log.d("TAG", "onResponse: ${commentsList.toString()}")
                                 adapter.updateCommentsList(commentsList)
@@ -141,36 +144,35 @@ class ShowPostActivity : AppCompatActivity() {
                         }catch (e:Exception){
                             Log.d("TAG_SHOW_POST_ACTIVITY", "Exception in comments: $e")
                         }
-                        try {
-                            //Likes data and count
-                            if (body.likes.isNotEmpty()) {
-                                val like = body.likes
 
-                                likesList = like.split(",") as ArrayList<String>
+                     try {
+                         val like = body.likes
+                                 if (like.isNotEmpty()) {
+                                     likesList = like.split(",") as ArrayList<String>
+                                     val newCommentsList = ArrayList<String>()
 
-                                val newLikesList = ArrayList<String>()
+                                     for(comment:String in likesList){
+                                         newCommentsList.add(comment)
+                                     }
+                                     likesList = newCommentsList
 
-                                for(likes:String in likesList){
-                                    newLikesList.add(likes)
-                                }
-                                likesList = newLikesList
+                                     Log.d("TAG", "ON LIKES: ${newCommentsList.toString()}")
+                                     tvViewPostLikes.text = "Likes: ${newCommentsList.size}"
 
-                                Log.d("TAG", "ON LIKES: ${likesList.toString()}")
-                                tvViewPostLikes.text = "Likes: ${likesList.size}"
-                            } else {
-                                tvViewPostLikes.text = "Likes: 0"
-                            }
-                            tvViewPostTitle.text = body.title
-                            tvViewPostText.text = body.text
-                            oldPostData = body
 
-                            //Check and store userName post
-                            postUser = body.user
-                            getAllUsers()
+                                 } else {
+                                     tvViewPostLikes.text = "Likes: 0"
+                                 }
+                                 tvViewPostTitle.text = body.title
+                                 tvViewPostText.text = body.text
+                                 oldPostData = body
 
-                        }catch (e:Exception){
-                            Log.d("TAG_SHOW_POST_ACTIVITY", "Exception in likes: $e")
-                        }
+                         }catch (e:Exception){
+                             Log.d("TAG_SHOW_POST_ACTIVITY", "Exception in likes: $e")
+                         }
+                        //Check and store userName post
+                        postUser = body.user
+                        getAllUsers()
                     }
                 }
 
@@ -180,6 +182,12 @@ class ShowPostActivity : AppCompatActivity() {
             })
     }
 
+    private fun handlelikes(likesString: String): Int {
+
+        if(likesString.isNotEmpty()){return likesString.split(",").size}
+        return 0
+
+    }
 
     //Update comment data
     private fun updatePostComments(){
@@ -194,9 +202,10 @@ class ShowPostActivity : AppCompatActivity() {
                     if (response.body() != null) {
                         var body = response.body()
                         if (body != null){
-                            Toast.makeText(this@ShowPostActivity,
-                                "Comment has been added", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@ShowPostActivity,"Comment has been added", Toast.LENGTH_SHORT).show()
                             getPost()
+                            Log.d("TAG", "ON updatepostcomment :::: $likesList")
+
                         }
                     }
                 }
@@ -210,32 +219,22 @@ class ShowPostActivity : AppCompatActivity() {
 
     //Update Likes from API
     private fun updatePostLikes(){
-/*        for (i in 0 until likesList.size) {
-            if (likesList[i] != userLogin) {
-                Log.d("TAG", "updatePostLikes: $userLogin")
-                Toast.makeText(this@ShowPostActivity, "FROM LIKES: Like has been added!!", Toast.LENGTH_SHORT).show()
-                break
-            }
 
-        }*/
         likesList.add(userLogin)
+
         oldPostData.likes = "${oldPostData.likes}, ${likesList.last()}"
+
         apiInterface?.updatePost(postId, oldPostData)
             ?.enqueue(object : Callback<PostsItem> {
                 @RequiresApi(Build.VERSION_CODES.N)
-                override fun onResponse(
-                    call: Call<PostsItem>,
-                    response: Response<PostsItem>) {
 
-                    if (response.body() != null) {
-                        var body = response.body()
-                        if (body != null)
-                        {
-                            Toast.makeText(this@ShowPostActivity,
-                                "Like has been added", Toast.LENGTH_SHORT).show()
+                override fun onResponse( call: Call<PostsItem>,  response: Response<PostsItem>) {
+
+                    var body = response.body()
+                        if (body != null) {
+                            Toast.makeText(this@ShowPostActivity, "Like has been added",Toast.LENGTH_SHORT).show()
                             getPost()
                         }
-                    }
                 }
 
                 override fun onFailure(call: Call<PostsItem>, t: Throwable) {
@@ -244,23 +243,18 @@ class ShowPostActivity : AppCompatActivity() {
             })
     }
 
-
     //Request user data from API
     private fun getAllUsers(){
-        apiInterface?.getAllUsers()
-            ?.enqueue(object : Callback<Users> {
+        apiInterface?.getAllUsers()?.enqueue(object : Callback<Users> {
                 @RequiresApi(Build.VERSION_CODES.N)
-                override fun onResponse(
-                    call: Call<Users>,
-                    response: Response<Users>) {
+                override fun onResponse(call: Call<Users>, response: Response<Users>) {
                     if (response.body() != null) {
                         var body = response.body()
-                        if (body != null)
-                        {
-                            //-----------------
-                            for (i in 0 .. body.size) {
+
+                        if (body != null) {
+                            for (i in 0 until body.size) {
                                 if (body[i].username == postUser){
-                                        postImage = body[i].image
+                                    postImage = body[i].image
                                     break
                                 }
                             }
@@ -274,7 +268,6 @@ class ShowPostActivity : AppCompatActivity() {
                 }
             })
     }
-
 
     fun getImage() {
         try {
@@ -290,7 +283,6 @@ class ShowPostActivity : AppCompatActivity() {
                     .override(600, 200)
                     .into(imageView2)
             }
-
             userNamePost.text = postUser
         } catch (e:Exception){
             Log.d("Catch", "No image: $e")

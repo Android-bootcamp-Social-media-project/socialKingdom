@@ -2,7 +2,6 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     android:id="@+id/cvPost"
     android:layout_width="match_parent"
     app:cardElevation="2dp"
@@ -13,26 +12,25 @@
     app:cardMaxElevation="12dp"
     android:layout_margin="10dp"
     app:cardCornerRadius="5dp"
-    app:cardBackgroundColor="#5CFFFF8B"
-    android:background="@drawable/scrolll_border">
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20dp"
-        android:background="@drawable/scrolll_border">
+        android:background="@drawable/border_corners">
 
         <TextView
             android:id="@+id/tvPostTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/scrolll_border"
+            android:fontFamily="sans-serif-light"
+            android:padding="9dp"
             android:text="Post Title"
-            android:textColor="@color/secondaryDarkColor"
+            android:textColor="@color/primaryColor"
             android:textSize="20sp"
-            android:padding="15dp"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:background="@drawable/border_2"/>
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/llStats"
@@ -41,7 +39,7 @@
             android:layout_below="@id/tvPostTitle"
             android:orientation="horizontal"
             android:layout_centerInParent="true"
-            android:paddingBottom="20dp">
+            >
 
             <TextView
                 android:id="@+id/tvComments"
@@ -84,13 +82,17 @@
                 android:id="@+id/tvOpenThread"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:textAlignment="textEnd"
-                android:layout_marginTop="80dp"
                 android:layout_below="@id/llStats"
-                android:textSize="15sp"
-                android:text="Open Thread"
-                android:textStyle="italic"/>
+                android:layout_marginTop="80dp"
+                android:drawablePadding="5dp"
+                android:drawableEnd="@drawable/ic_baseline_east_24"
+                android:fontFamily="@font/cardo_italic"
+                android:padding="2dp"
+                android:text="View Post"
+                android:textColor="@color/white"
+                android:textAlignment="textEnd"
+                android:textSize="20sp"
+                android:textStyle="italic" />
 
         </LinearLayout>
     </RelativeLayout>

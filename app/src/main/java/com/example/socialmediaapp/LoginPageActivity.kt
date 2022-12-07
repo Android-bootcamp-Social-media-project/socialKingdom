@@ -49,13 +49,13 @@ class LoginPageActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login_page)
 
 
-         sharedPreferences = this.getSharedPreferences(
-            getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+         sharedPreferences = this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+
          username = sharedPreferences.getString("User", "")!!
          password = sharedPreferences.getString("Pass", "")!!
 
         if (username!=""&&password!="") {
-            //showBiometricPromptForDecryption()
+            showBiometricPromptForDecryption()
         }
 
 
@@ -69,7 +69,7 @@ class LoginPageActivity : AppCompatActivity() {
         signUpBtn.setOnClickListener {
 
             if (userNameEtSignup.text.isNotEmpty() && emailEtSignUp.text.isNotEmpty() && userPasswordEtsignup.text.isNotEmpty()) {
-                // addUser()
+                addUser()
 
                 if (userNameEtSignup.text.isNotEmpty() &&
                     emailEtSignUp.text.isNotEmpty() &&
@@ -78,9 +78,9 @@ class LoginPageActivity : AppCompatActivity() {
                     //Check if the user has inserted the image
                     if (imageURLEt.text.isNotEmpty()) {
                         userImage = imageURLEt.text.toString()
-                        //addUser()
+                        addUser()
                     } else {
-                        //addUser()
+                        addUser()
                     }
 
                 } else {
@@ -101,9 +101,9 @@ class LoginPageActivity : AppCompatActivity() {
         logInBtn.setOnClickListener {
 
             if (userNameEtSignup.text.isNotEmpty() && userPasswordEtsignup.text.isNotEmpty()){
-                //loginUser()
+                loginUser()
             }
-           // showBiometricPromptForDecryption()
+            showBiometricPromptForDecryption()
         }
     }
 
@@ -123,8 +123,7 @@ class LoginPageActivity : AppCompatActivity() {
                 override fun onResponse(
                     call: Call<UsersItem>,
                     response: Response<UsersItem>) {
-                    Toast.makeText(this@LoginPageActivity,
-                        "The user has been added successfully,  Please login..", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@LoginPageActivity,"The user has been added successfully,  Please login..", Toast.LENGTH_LONG).show()
                 }
                 override fun onFailure(call: Call<UsersItem>, t: Throwable) {
                     Log.d("MAIN", "Something went wrong!")
@@ -141,7 +140,7 @@ class LoginPageActivity : AppCompatActivity() {
             password = passwordEt.text.toString()
         }
 
-        apiInterface?.login( username,password )
+        apiInterface?.login(username,password)
             ?.enqueue(object : Callback<String> {
                 @RequiresApi(Build.VERSION_CODES.N)
                 override fun onResponse(call: Call<String>, response: Response<String>) {
@@ -149,23 +148,19 @@ class LoginPageActivity : AppCompatActivity() {
 
                         // Defining variable for storing
                         var key = response.body()
-                        Log.d("APIKey", "$key")
+
 
                         apiKey = key.toString()
-                        if (apiKey != "")
-                        {
-                            sharedPreferences.edit().apply {
 
+                        if (apiKey != ""){
+                            sharedPreferences.edit().apply {
                                 putString("User",username)
                                 putString("Pass",password)
                                 apply()
-
                             }
-                           // getUserData()
+                            getUserData()
                             Toast.makeText(this@LoginPageActivity,"Welcome back $username", Toast.LENGTH_SHORT).show()
                         }
-
-
                     }
                     else {
                         Toast.makeText(this@LoginPageActivity,"username or password not correct", Toast.LENGTH_SHORT).show()
@@ -189,10 +184,9 @@ class LoginPageActivity : AppCompatActivity() {
 
                     if (response.body() != null) {
                         var body = response.body()
-                        if (body != null)
-                        {
+                        if (body != null){
                             userLogin = body.username
-                            //homePageActivity()
+                            homePageActivity()
                         }
                     }
                 }
@@ -202,16 +196,16 @@ class LoginPageActivity : AppCompatActivity() {
             })
     }
 
-/*    private fun homePageActivity() {
+    private fun homePageActivity() {
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("userLogin",userLogin)
         startActivity(intent)
-    }*/
+    }
 
  ////////////////////////////////////////////////////////////////
  //////////////////Fingerprint from user/////////////////////////
 ////////////////////////////////////////////////////////////////
-/*
+
     private lateinit var executor: Executor
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
@@ -227,12 +221,10 @@ class LoginPageActivity : AppCompatActivity() {
         executor = ContextCompat.getMainExecutor(this)
         biometricPrompt = BiometricPrompt(this, executor,
             object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationError(errorCode: Int,
-                                                   errString: CharSequence) {
+
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
-                    Toast.makeText(applicationContext,
-                        "Fingerprint doesn't match: $errString", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(applicationContext,"Fingerprint doesn't match: $errString", Toast.LENGTH_SHORT)   .show()
                 }
 
                 // On successful authentication
@@ -263,11 +255,8 @@ class LoginPageActivity : AppCompatActivity() {
             BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
 
             BiometricManager.BIOMETRIC_SUCCESS -> Log.d("MY_APP_TAG", "App can authenticate using biometrics.")
-
             BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> Log.e("MY_APP_TAG", "No biometric features available on this device.")
-
             BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> Log.e("MY_APP_TAG", "Biometric features are currently unavailable.")
-
             BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
 
                 // Prompts the user to create credentials that your app accepts.
@@ -282,5 +271,5 @@ class LoginPageActivity : AppCompatActivity() {
 
         biometricPrompt.authenticate(promptInfo)
 
-    }*/
+    }
 }
