@@ -53,7 +53,7 @@ class LoginPageActivity : AppCompatActivity() {
 
 
         //Login variable
-        userNameEtsignup = findViewById(R.id.userNameEtsignup)
+        userNameEtsignup = findViewById(R.id.userNameEtLogin)
         passwordEt = findViewById(R.id.passwordEt)
         logInBtn = findViewById(R.id.logInBtn)
 

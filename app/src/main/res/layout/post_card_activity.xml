@@ -2,31 +2,37 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:id="@+id/cvPost"
     android:layout_width="match_parent"
-    app:cardElevation="3dp"
+    app:cardElevation="2dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true"
     android:layout_gravity="center"
     android:layout_height="wrap_content"
     app:cardMaxElevation="12dp"
     android:layout_margin="10dp"
-    app:cardCornerRadius="10dp">
+    app:cardCornerRadius="5dp"
+    app:cardBackgroundColor="#5CFFFF8B"
+    android:background="@drawable/scrolll_border">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:background="@drawable/scrolll_border">
 
         <TextView
             android:id="@+id/tvPostTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="15dp"
             android:text="Post Title"
+            android:textColor="@color/secondaryDarkColor"
             android:textSize="20sp"
+            android:padding="15dp"
             android:textStyle="bold"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:background="@drawable/border_2"/>
 
         <LinearLayout
             android:id="@+id/llStats"
@@ -35,13 +41,13 @@
             android:layout_below="@id/tvPostTitle"
             android:orientation="horizontal"
             android:layout_centerInParent="true"
-            android:paddingBottom="15dp">
+            android:paddingBottom="20dp">
 
             <TextView
                 android:id="@+id/tvComments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="12dp"
                 android:textAlignment="center"
                 android:drawablePadding="2dp"
                 android:textSize="16sp"
@@ -52,13 +58,13 @@
                 android:id="@+id/tvLikes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="12dp"
                 android:textAlignment="center"
                 android:drawablePadding="2dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:text="0 Likes"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="20dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -66,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="20dp"
+            android:padding="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -74,16 +80,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.478">
 
-        <TextView
-            android:id="@+id/tvOpenThread"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:textAlignment="textEnd"
-            android:layout_marginTop="50dp"
-            android:layout_below="@id/llStats"
-            android:textSize="15sp"
-            android:text="Open Thread" />
+            <TextView
+                android:id="@+id/tvOpenThread"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:textAlignment="textEnd"
+                android:layout_marginTop="80dp"
+                android:layout_below="@id/llStats"
+                android:textSize="15sp"
+                android:text="Open Thread"
+                android:textStyle="italic"/>
 
         </LinearLayout>
     </RelativeLayout>
