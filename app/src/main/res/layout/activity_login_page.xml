@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="5dp"
-    tools:context=".LoginPageActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="5dp">
+
 
     <TextView
         android:id="@+id/logInTv"
@@ -14,6 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/titles_border"
         android:text="Log In"
+        android:textColor="@color/white"
         android:textAlignment="center"
         android:textSize="30sp"
         android:textStyle="italic"
@@ -24,41 +23,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp"
+        android:padding="10dp"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintVertical_bias="0.478"
         app:layout_constraintTop_toBottomOf="@id/logInTv">
 
 
         <EditText
-            android:id="@+id/userNameEtsignup"
+            android:id="@+id/userNameEtLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="User Name"
-            android:textAlignment="center"
-            android:padding="10dp"
-            android:textStyle="bold"
             android:layout_marginBottom="20dp"
-            android:textColorHint="@color/lightPurple"
-            android:background="@drawable/border"/>
+            android:layout_weight="1"
+            android:background="@drawable/border"
+            android:ems="10"
+            android:hint="Username..."
+            android:padding="8dp"
+            android:textAlignment="center"/>
 
         <EditText
             android:id="@+id/passwordEt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Password"
+            android:hint="Password..."
+            android:inputType="textPassword"
             android:textAlignment="center"
-            android:padding="10dp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/userNameEtsignup"
-            android:background="@drawable/border"
-            android:textColorHint="@color/lightPurple" />
+            android:padding="8dp"
+            app:layout_constraintTop_toBottomOf="@id/userNameEtLogin"
+            android:background="@drawable/border" />
     </LinearLayout>
 
     <Button
@@ -66,15 +60,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:background="@drawable/background_btn"
         android:padding="10dp"
         android:text="Log In"
+        android:textColor="@color/black"
         android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@id/linearLayoutsignIn"
-        android:background="@drawable/background_btn"
-        android:textStyle="bold"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"/>
-
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toBottomOf="@id/linearLayoutsignIn"/>
 
     <TextView
         android:id="@+id/signUpTv"
@@ -82,6 +74,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/titles_border"
         android:text="Sign Up"
+        android:textColor="@color/white"
+        android:layout_marginVertical="50dp"
         android:textAlignment="center"
         android:textSize="30sp"
         android:textStyle="italic"
@@ -93,12 +87,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.478"
         app:layout_constraintTop_toBottomOf="@id/signUpTv">
 
 
@@ -106,46 +97,56 @@
             android:id="@+id/userNameEtSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="User Name"
+            android:hint="Username..."
             android:textAlignment="center"
-            android:padding="10dp"
-            android:textStyle="bold"
-            android:layout_marginBottom="20dp"
-            android:textColorHint="@color/lightPurple"
+            android:padding="8dp"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/border"/>
 
         <EditText
             android:id="@+id/emailEtSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Email"
+            android:hint="Email..."
+            android:inputType="textEmailAddress"
             android:textAlignment="center"
-            android:padding="10dp"
-            android:textStyle="bold"
-            android:layout_marginBottom="20dp"
-            android:textColorHint="@color/lightPurple"
+            android:padding="8dp"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/border"/>
 
         <EditText
             android:id="@+id/userPasswordEtsignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Password"
+            android:hint="Password..."
+            android:inputType="textPassword"
             android:textAlignment="center"
-            android:padding="10dp"
-            android:textStyle="bold"
-            android:layout_marginBottom="20dp"
-            android:textColorHint="@color/lightPurple"
-            android:background="@drawable/border" />
+            android:padding="8dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/border"/>
+
+
+        <EditText
+            android:id="@+id/imageURLEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Enter image URL..."
+            android:inputType="textUri"
+            android:textAlignment="center"
+            android:layout_marginBottom="15dp"
+            android:padding="8dp"
+            android:background="@drawable/border"/>
 
 
     </LinearLayout>
@@ -157,11 +158,10 @@
         android:layout_weight="1"
         android:padding="10dp"
         android:text="Sign Up"
+        android:layout_margin="10dp"
+        android:textColor="@color/black"
         android:textAlignment="center"
         app:layout_constraintTop_toBottomOf="@id/linearLayoutsignUp"
-        android:background="@drawable/background_btn"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:textStyle="bold"/>
+        android:background="@drawable/background_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

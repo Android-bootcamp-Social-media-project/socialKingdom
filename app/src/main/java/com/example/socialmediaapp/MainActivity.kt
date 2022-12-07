@@ -15,7 +15,7 @@ import retrofit2.*
 class MainActivity : AppCompatActivity() {
 
     val apiInterface = APIClient().getClient()?.create(APIInterface::class.java)
-    var userLogin = "anonymous"
+    var userLogin = "Anonymous"
     var postsData = arrayListOf<PostsItem>()
     private lateinit var myRV : RecyclerView
     var adapter = PostsAdapter( this, postsData)
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         btnlogInSignUp = findViewById(R.id.btnlogInSignUp)
         btnlogInSignUp.setOnClickListener {
-            if (userLogin == "anonymous"){
+            if (userLogin == "Anonymous"){
                 signUp()
             }
             else {
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         btAddPost = findViewById(R.id.btAddPost)
         btAddPost.setOnClickListener {
-            if (userLogin == "anonymous"){
+            if (userLogin == "Anonymous"){
                 Toast.makeText(this,"You should be login", Toast.LENGTH_SHORT).show()
             }
             else {

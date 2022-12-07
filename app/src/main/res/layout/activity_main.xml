@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:layout_margin="5dp">
 
     <TextView
         android:id="@+id/homepageTv"
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/titles_border"
         android:text="Home Page"
+        android:textColor="@color/white"
         android:textAlignment="center"
         android:textSize="30sp"
         android:textStyle="italic"
@@ -23,8 +25,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
+        tools:listitem="@layout/post_card_activity"
         app:layout_constraintBottom_toTopOf="@+id/layout1"
-        app:layout_constraintTop_toBottomOf="@id/homepageTv" />
+        app:layout_constraintTop_toBottomOf="@id/homepageTv"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="180dp" />
 
     <LinearLayout
         android:id="@+id/layout1"
@@ -34,21 +39,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:padding="2dp"
-        android:gravity="center"
-        android:layout_margin="8dp"
-        >
+        android:layout_margin="10dp">
 
         <Button
             android:id="@+id/btAddPost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_margin="2dp"
             android:gravity="center"
             android:text="Add Post"
+            android:layout_margin="2dp"
+            android:textColor="@color/black"
             android:background="@drawable/background_btn"
-            android:textSize="20dp"/>
+            android:textSize="15dp"/>
 
         <Button
             android:id="@+id/btnlogInSignUp"
@@ -56,7 +59,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Login/Signup"
+            android:layout_margin="2dp"
+            android:textColor="@color/black"
             android:background="@drawable/background_btn"
-            android:textSize="20dp"/>
+            android:textSize="15dp"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

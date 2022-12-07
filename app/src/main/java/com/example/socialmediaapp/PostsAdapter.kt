@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.rv_posts_card.view.*
+import kotlinx.android.synthetic.main.post_card_activity.view.*
 import java.util.regex.Pattern
 
 class PostsAdapter ( var activity: MainActivity,   private var postList: List<PostsItem>):
@@ -14,7 +14,7 @@ class PostsAdapter ( var activity: MainActivity,   private var postList: List<Po
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.rv_posts_card,
+                R.layout.post_card_activity,
                 parent,
                 false
             )
@@ -24,7 +24,7 @@ class PostsAdapter ( var activity: MainActivity,   private var postList: List<Po
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         var postsItems = postList[position]
         holder.itemView.apply {
-            tvPostTitle.text = postsItems.text
+            tvPostTitle.text = postsItems.title
 
             //Comments data and count
             if (postsItems.comments.isNotEmpty()){

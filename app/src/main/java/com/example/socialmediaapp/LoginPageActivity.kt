@@ -25,12 +25,15 @@ class LoginPageActivity : AppCompatActivity() {
     // Set user default value as anonymous
     var userLogin = "anonymous"
 
+
     var apiKey = ""
+    var userImage = "https://i.ibb.co/71wByPN/1ee67050-845a-4c89-8032-172dc0d14b00.jpg"
 
 
     lateinit var userNameEtSignup : EditText
     lateinit var emailEtSignUp : EditText
     lateinit var userPasswordEtsignup : EditText
+    lateinit var imageURLEt : EditText
     lateinit var signUpBtn : Button
 
     lateinit var userNameEtsignup : EditText
@@ -52,7 +55,7 @@ class LoginPageActivity : AppCompatActivity() {
          password = sharedPreferences.getString("Pass", "")!!
 
         if (username!=""&&password!="") {
-            showBiometricPromptForDecryption()
+            //showBiometricPromptForDecryption()
         }
 
 
@@ -60,29 +63,47 @@ class LoginPageActivity : AppCompatActivity() {
         userNameEtSignup = findViewById(R.id.userNameEtSignup)
         emailEtSignUp = findViewById(R.id.emailEtSignUp)
         userPasswordEtsignup = findViewById(R.id.userPasswordEtsignup)
+        imageURLEt = findViewById(R.id.imageURLEt)
         signUpBtn = findViewById(R.id.signUpBtn)
 
         signUpBtn.setOnClickListener {
+
             if (userNameEtSignup.text.isNotEmpty() && emailEtSignUp.text.isNotEmpty() && userPasswordEtsignup.text.isNotEmpty()) {
-                addUser()
-            }
-            else {
-                Toast.makeText(this@LoginPageActivity,"All field are required", Toast.LENGTH_SHORT).show()
+                // addUser()
+
+                if (userNameEtSignup.text.isNotEmpty() &&
+                    emailEtSignUp.text.isNotEmpty() &&
+                    userPasswordEtsignup.text.isNotEmpty()
+                ) {
+                    //Check if the user has inserted the image
+                    if (imageURLEt.text.isNotEmpty()) {
+                        userImage = imageURLEt.text.toString()
+                        //addUser()
+                    } else {
+                        //addUser()
+                    }
+
+                } else {
+                    Toast.makeText(
+                        this@LoginPageActivity,
+                        "All field are required",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
 
-
         //Login variable
-        userNameEtsignup = findViewById(R.id.userNameEtsignup)
+        userNameEtsignup = findViewById(R.id.userNameEtLogin)
         passwordEt = findViewById(R.id.passwordEt)
         logInBtn = findViewById(R.id.logInBtn)
 
         logInBtn.setOnClickListener {
 
             if (userNameEtSignup.text.isNotEmpty() && userPasswordEtsignup.text.isNotEmpty()){
-                loginUser()
+                //loginUser()
             }
-            showBiometricPromptForDecryption()
+           // showBiometricPromptForDecryption()
         }
     }
 
@@ -93,7 +114,8 @@ class LoginPageActivity : AppCompatActivity() {
             UsersItem(
                 emailEtSignUp.text.toString(),
                 userNameEtSignup.text.toString(),
-                userPasswordEtsignup.text.toString()
+                userPasswordEtsignup.text.toString(),
+                userImage
             )
         )
             ?.enqueue(object : Callback<UsersItem> {
@@ -102,7 +124,7 @@ class LoginPageActivity : AppCompatActivity() {
                     call: Call<UsersItem>,
                     response: Response<UsersItem>) {
                     Toast.makeText(this@LoginPageActivity,
-                        "The user has been added successfully", Toast.LENGTH_LONG).show()
+                        "The user has been added successfully,  Please login..", Toast.LENGTH_LONG).show()
                 }
                 override fun onFailure(call: Call<UsersItem>, t: Throwable) {
                     Log.d("MAIN", "Something went wrong!")
@@ -139,7 +161,7 @@ class LoginPageActivity : AppCompatActivity() {
                                 apply()
 
                             }
-                            getUserData()
+                           // getUserData()
                             Toast.makeText(this@LoginPageActivity,"Welcome back $username", Toast.LENGTH_SHORT).show()
                         }
 
@@ -170,7 +192,7 @@ class LoginPageActivity : AppCompatActivity() {
                         if (body != null)
                         {
                             userLogin = body.username
-                            homePageActivity()
+                            //homePageActivity()
                         }
                     }
                 }
@@ -180,15 +202,16 @@ class LoginPageActivity : AppCompatActivity() {
             })
     }
 
-    private fun homePageActivity() {
+/*    private fun homePageActivity() {
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("userLogin",userLogin)
         startActivity(intent)
-    }
+    }*/
 
  ////////////////////////////////////////////////////////////////
  //////////////////Fingerprint from user/////////////////////////
 ////////////////////////////////////////////////////////////////
+/*
     private lateinit var executor: Executor
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
@@ -258,5 +281,6 @@ class LoginPageActivity : AppCompatActivity() {
         }
 
         biometricPrompt.authenticate(promptInfo)
-    }
+
+    }*/
 }
