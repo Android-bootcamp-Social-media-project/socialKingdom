@@ -16,12 +16,14 @@ class LoginPageActivity : AppCompatActivity() {
     val apiInterface = APIClient().getClient()?.create(APIInterface::class.java)
 
     // Set user as a default as anonymous
-    var userLogin = "anonymous"
+    var userLogin = "Anonymous"
     var apiKey = ""
+    var userImage = "https://i.ibb.co/71wByPN/1ee67050-845a-4c89-8032-172dc0d14b00.jpg"
 
     lateinit var userNameEtSignup : EditText
     lateinit var emailEtSignUp : EditText
     lateinit var userPasswordEtsignup : EditText
+    lateinit var imageURLEt : EditText
     lateinit var signUpBtn : Button
 
     lateinit var userNameEtsignup : EditText
@@ -38,13 +40,21 @@ class LoginPageActivity : AppCompatActivity() {
         userNameEtSignup = findViewById(R.id.userNameEtSignup)
         emailEtSignUp = findViewById(R.id.emailEtSignUp)
         userPasswordEtsignup = findViewById(R.id.userPasswordEtsignup)
+        imageURLEt = findViewById(R.id.imageURLEt)
         signUpBtn = findViewById(R.id.signUpBtn)
 
         signUpBtn.setOnClickListener {
             if (userNameEtSignup.text.isNotEmpty() &&
                 emailEtSignUp.text.isNotEmpty() &&
                 userPasswordEtsignup.text.isNotEmpty()) {
-                addUser()
+                //Check if the user has inserted the image
+                if (imageURLEt.text.isNotEmpty()){
+                    userImage = imageURLEt.text.toString()
+                    addUser()
+                }
+                else {
+                    addUser()
+                }
             }
             else {
                 Toast.makeText(this@LoginPageActivity,"All field is required", Toast.LENGTH_SHORT).show()
@@ -75,7 +85,8 @@ class LoginPageActivity : AppCompatActivity() {
             UsersItem(
                 emailEtSignUp.text.toString(),
                 userNameEtSignup.text.toString(),
-                userPasswordEtsignup.text.toString()
+                userPasswordEtsignup.text.toString(),
+                userImage
             )
         )
             ?.enqueue(object : Callback<UsersItem> {
@@ -84,7 +95,7 @@ class LoginPageActivity : AppCompatActivity() {
                     call: Call<UsersItem>,
                     response: Response<UsersItem>) {
                     Toast.makeText(this@LoginPageActivity,
-                        "The user has been added successfully", Toast.LENGTH_LONG).show()
+                        "The user has been added successfully,  Please login..", Toast.LENGTH_LONG).show()
                 }
                 override fun onFailure(call: Call<UsersItem>, t: Throwable) {
                     Log.d("MAIN", "Something went wrong!")

@@ -16,7 +16,7 @@ import retrofit2.Response
 class AddPostActivity : AppCompatActivity() {
 
     val apiInterface = APIClient().getClient()?.create(APIInterface::class.java)
-    var userLogin = "anonymous"
+    var userLogin = "Anonymous"
 
     lateinit var etAddPostTitle : EditText
     lateinit var etAddPostText : EditText

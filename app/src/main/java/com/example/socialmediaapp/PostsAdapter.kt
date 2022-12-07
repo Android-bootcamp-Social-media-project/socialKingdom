@@ -24,7 +24,7 @@ class PostsAdapter ( var activity: MainActivity,   private var postList: List<Po
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         var postsItems = postList[position]
         holder.itemView.apply {
-            tvPostTitle.text = postsItems.text
+            tvPostTitle.text = postsItems.title
 
             //Comments data and count
             if (postsItems.comments.isNotEmpty()){

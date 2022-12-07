@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.activity_show_post.*
 import retrofit2.*
 
 class ShowPostActivity : AppCompatActivity() {
@@ -18,8 +20,11 @@ class ShowPostActivity : AppCompatActivity() {
     private val apiInterface by lazy { APIClient().getClient()?.create(APIInterface::class.java) }
     //val apiInterface = APIClient().getClient()?.create(APIInterface::class.java)
     var postId = 0
-    var userLogin = "anonymous"
+    var postImage = ""
+    var postUser = ""
+    var userLogin = "Anonymous"
 
+    lateinit var userNamePost : TextView
     lateinit var tvViewPostTitle : TextView
     lateinit var tvViewPostText : TextView
     lateinit var tvViewPostLikes : TextView
@@ -53,6 +58,7 @@ class ShowPostActivity : AppCompatActivity() {
         myRV.adapter = adapter
         myRV.layoutManager = LinearLayoutManager(this)
 
+        userNamePost = findViewById(R.id.userNamePost)
         tvViewPostTitle = findViewById(R.id.tvViewPostTitle)
         tvViewPostText = findViewById(R.id.tvViewPostText)
         tvViewPostLikes = findViewById(R.id.tvViewPostLikes)
@@ -65,12 +71,13 @@ class ShowPostActivity : AppCompatActivity() {
         getPost()
         btLeaveComment.setOnClickListener {
             if (etViewPostComment.text.isNotEmpty()){
-                if (userLogin == "anonymous"){
+                if (userLogin == "Anonymous"){
                     Toast.makeText(this,"You should be login", Toast.LENGTH_SHORT).show()
                 }
                 else {
                         updatePostComments()
-                        etViewPostComment.clearFocus()
+                    etViewPostComment.clearFocus()
+                        etViewPostComment.text.clear()
                     }
             }
             else {
@@ -80,8 +87,8 @@ class ShowPostActivity : AppCompatActivity() {
         }
 
         btLike.setOnClickListener {
-
             if(userLogin != "Anonymous") {
+                Log.d("Tag", "UserLoginData: $userLogin")
                 if (likesList.contains(userLogin!!)) {
                     Toast.makeText(this, "You have already liked this post", Toast.LENGTH_LONG)
                         .show()
@@ -89,6 +96,9 @@ class ShowPostActivity : AppCompatActivity() {
                 else{
                     updatePostLikes()
                 }
+            } else {
+                Toast.makeText(this, "You should be login", Toast.LENGTH_LONG)
+
             }
 
         }
@@ -127,6 +137,7 @@ class ShowPostActivity : AppCompatActivity() {
                             else {
                                 tvViewPostComments.text = "Comments: 0"
                             }
+
                         }catch (e:Exception){
                             Log.d("TAG_SHOW_POST_ACTIVITY", "Exception in comments: $e")
                         }
@@ -152,6 +163,11 @@ class ShowPostActivity : AppCompatActivity() {
                             tvViewPostTitle.text = body.title
                             tvViewPostText.text = body.text
                             oldPostData = body
+
+                            //Check and store userName post
+                            postUser = body.user
+                            getAllUsers()
+
                         }catch (e:Exception){
                             Log.d("TAG_SHOW_POST_ACTIVITY", "Exception in likes: $e")
                         }
@@ -226,5 +242,58 @@ class ShowPostActivity : AppCompatActivity() {
                     Log.d("Main", "onFailure: ${t.message.toString()}")
                 }
             })
+    }
+
+
+    //Request user data from API
+    private fun getAllUsers(){
+        apiInterface?.getAllUsers()
+            ?.enqueue(object : Callback<Users> {
+                @RequiresApi(Build.VERSION_CODES.N)
+                override fun onResponse(
+                    call: Call<Users>,
+                    response: Response<Users>) {
+                    if (response.body() != null) {
+                        var body = response.body()
+                        if (body != null)
+                        {
+                            //-----------------
+                            for (i in 0 .. body.size) {
+                                if (body[i].username == postUser){
+                                        postImage = body[i].image
+                                    break
+                                }
+                            }
+                            Log.d("PostImageInfo", "postImage: $postImage")
+                            getImage()
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<Users>, t: Throwable) {
+                    Log.d("Main", "onFailure: ${t.message.toString()}")
+                }
+            })
+    }
+
+
+    fun getImage() {
+        try {
+            if (postImage.isNotEmpty()) {
+                Glide.with(this)
+                    .load(postImage)
+                    .override(600, 200)
+                    .into(imageView2)
+            } else {
+                postImage = "https://i.ibb.co/71wByPN/1ee67050-845a-4c89-8032-172dc0d14b00.jpg"
+                Glide.with(this)
+                    .load(postImage)
+                    .override(600, 200)
+                    .into(imageView2)
+            }
+
+            userNamePost.text = postUser
+        } catch (e:Exception){
+            Log.d("Catch", "No image: $e")
+        }
     }
 }
