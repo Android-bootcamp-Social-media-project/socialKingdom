@@ -118,58 +118,21 @@ class ShowPostActivity : AppCompatActivity() {
 
                     if (response.body() != null) {
                         var body = response.body()!!
-                        try{
+                        //try{
 
                             val comment = body.comments
-
+                            comments(comment)
                             //Comments data and count
-                            if (comment.isNotEmpty()){
-
-                                commentsList = comment.split(",") as ArrayList<String>
-                                val newCommentsList = ArrayList<String>()
-
-                                for(comment:String in commentsList){
-                                    newCommentsList.add(comment)
-                                }
-
-                                commentsList = newCommentsList
-                                Log.d("TAG", "onResponse: ${commentsList.toString()}")
-                                adapter.updateCommentsList(commentsList)
-                                tvViewPostComments.text = "Comments: ${commentsList.size}"
-                            }
-                            else {
-                                tvViewPostComments.text = "Comments: 0"
-                            }
-
-                        }catch (e:Exception){
-                            Log.d("TAG_SHOW_POST_ACTIVITY", "Exception in comments: $e")
-                        }
-
-                     try {
-                         val like = body.likes
-                                 if (like.isNotEmpty()) {
-                                     likesList = like.split(",") as ArrayList<String>
-                                     val newCommentsList = ArrayList<String>()
-
-                                     for(comment:String in likesList){
-                                         newCommentsList.add(comment)
-                                     }
-                                     likesList = newCommentsList
-
-                                     Log.d("TAG", "ON LIKES: ${newCommentsList.toString()}")
-                                     tvViewPostLikes.text = "Likes: ${newCommentsList.size}"
 
 
-                                 } else {
-                                     tvViewPostLikes.text = "Likes: 0"
-                                 }
-                                 tvViewPostTitle.text = body.title
-                                 tvViewPostText.text = body.text
-                                 oldPostData = body
+                        likes(body.likes)
 
-                         }catch (e:Exception){
-                             Log.d("TAG_SHOW_POST_ACTIVITY", "Exception in likes: $e")
-                         }
+                        tvViewPostTitle.text = body.title
+                        tvViewPostText.text = body.text
+                        oldPostData = body
+                        tvViewPostComments.text = "Comments: ${comments(comment)}"
+                        tvViewPostLikes.text = "Likes: ${likes(body.likes)}"
+
                         //Check and store userName post
                         postUser = body.user
                         getAllUsers()
@@ -182,11 +145,30 @@ class ShowPostActivity : AppCompatActivity() {
             })
     }
 
-    private fun handlelikes(likesString: String): Int {
+    private fun likes(likesString: String): Int {
 
         if(likesString.isNotEmpty()){return likesString.split(",").size}
         return 0
 
+    }
+    private fun comments(commentsString: String): Int {
+
+        if (commentsString.isNotEmpty()){
+
+            commentsList = commentsString.split(",") as ArrayList<String>
+            val newCommentsList = ArrayList<String>()
+
+            for(comment:String in commentsList){
+                newCommentsList.add(comment)
+            }
+
+            commentsList = newCommentsList
+            Log.d("TAG", "onResponse: ${commentsList.toString()}")
+
+            adapter.updateCommentsList(commentsList)
+            return commentsList.size
+        }
+        return 0
     }
 
     //Update comment data
